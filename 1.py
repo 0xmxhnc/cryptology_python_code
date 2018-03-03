@@ -18,7 +18,7 @@ def fun2(cipher_text, k, b):
     k1 = inverse(k)
     for x in cipher_text:
         c = ((ord(x)-ord('a')-b)*k1) % 26 + ord('a')
-        print("(%d(%s)-%d)*%d = %d (mod26)" % (ord(x)-ord('a'), x, b, k1, c-ord('a')))
+        print("(%d(%s)-%d)*%d = %d(%s) (mod26)" % (ord(x)-ord('a'), x, b, k1, c-ord('a'), chr(c)))
         plain_text.append(chr(c))
     print "plain_text:"+"".join(plain_text)
     return 0
@@ -41,5 +41,3 @@ def inverse(k, _range_=range(1, 26)):    # _range_为密文空间
         if (x*k) % (_range_[-1]+1) == 1:
             return x
 
-
-fun3('jiang', 'xin')

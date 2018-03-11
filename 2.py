@@ -32,3 +32,40 @@ def to_bit(plaintext, printf=False):
         print ' '.join(bit_text)
     return ''.join(bit_text)
 
+def fun2(plaintext):
+    """
+    fun2(plaintext) -> string
+
+    返回经过S盒替换后16进制数据
+    """
+    # 将S的数据导入
+    s_box = []
+    for x in range(1, 9):
+        with open('s_box/s'+str(x)+'.txt') as f:
+            n = f.read()
+            l = n.split(',')
+            for i in range(0, len(l)):
+                l[i] = int(l[i])
+            s_box.append(l)
+
+    # 将48bit分成6bit一组
+    rows, cols, l = [], [], []
+    plaintext = to_bit(plaintext)
+    for x in range(0, 48, 6):
+        l.append(plaintext[x:x+6])
+
+    for i in range(0, 8):
+        rows.append(int(l[i][0] + l[i][5], 2))
+        cols.append(int(l[i][1:5], 2))
+
+    # S盒压缩
+    cipher_text = []
+    for i in range(0, 8):
+        index = rows[i]*16 + cols[i]
+        cipher_text.append(s_box[i][index])
+
+    # 转化为16进制
+    for x in range(0, 8):
+        cipher_text[x] = hex(cipher_text[x])[2:]
+
+    return ''.join(cipher_text).upper()

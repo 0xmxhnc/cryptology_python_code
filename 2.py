@@ -35,7 +35,8 @@ def to_bit(plaintext, printf=False):
 def fun2(plaintext):
     """
     fun2(plaintext) -> string
-
+    
+    需要将该py文件与s_box文件夹放在同一目录下
     返回经过S盒替换后16进制数据
     """
     # 将S的数据导入

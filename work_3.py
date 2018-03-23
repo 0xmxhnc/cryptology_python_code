@@ -36,13 +36,15 @@ def fun1(plaintext, key):
     # 二维列表转置
     plaintext = map(list, zip(*plaintext))
     key = map(list, zip(*key))
+    print '字节替代:\n', plaintext
 
     # 行位移
     shift_row(plaintext)
+    print '行移位:\n', plaintext
 
     # 列混合
     result = mix_columns(plaintext)
-    print result
+    print '列混合:\n', result
 
 
 def partition(list, cols):
@@ -146,4 +148,5 @@ def xtime(row, col):
     result = result_list[0] ^ result_list[1] ^ result_list[2] ^ result_list[3]
     return result
 
-fun1('your name', 2016122000)
+
+fun1('name', 2016122100)

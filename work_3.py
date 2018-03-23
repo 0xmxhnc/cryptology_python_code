@@ -41,7 +41,8 @@ def fun1(plaintext, key):
     shift_row(plaintext)
 
     # 列混合
-    mix_columns(plaintext)
+    result = mix_columns(plaintext)
+    print result
 
 
 def partition(list, cols):
@@ -92,31 +93,57 @@ def shift_row(list):
 
     return list
 
-def mix_columns(list):
+
+def mix_columns(_list):
     """
-    min_columns(list) -> list
+    min_columns(_list) -> _list
 
     返回列混合后的列表
     """
     mix_matrix = [2, 3, 1, 1, 1, 2, 3, 1, 1, 1, 2, 3, 3, 1, 1, 2]
     new_list = []
 
-    # 转换为二进制
-    for x in range(len(mix_matrix)):
-        bin_num = bin(mix_matrix[x])[2:]
-        while len(bin_num) != 8:
-            bin_num = '0' + bin_num
-        mix_matrix[x] = bin_num
+    # 转换为十进制
+    for x in range(len(_list)):
+        for y in range(len(_list[0])):
+            int_num = int(_list[x][y], 16)
+            _list[x][y] = int_num
 
-    for x in range(len(list)):
-        for y in range(len(list[0])):
-            bin_num = bin(int(list[x][y], 16))[2:]
-            while len(bin_num) != 8:
-                bin_num = '0' + bin_num
-            list[x][y] = bin_num
+    #转置
+    _list = map(list, zip(*_list))
 
-    partition(mix_matrix, 4)
+    #转化为矩阵
+    mix_matrix = partition(mix_matrix, 4)
+
+    for i in range(len(mix_matrix)):
+        for j in range(len(_list)):
+            new_list.append(hex(xtime(mix_matrix[i], _list[j])))
+
+    new_list = partition(new_list, 4)
+    return new_list
 
 
+def xtime(row, col):
+    """
+    xtime(row, col) -> list
 
-fun1('wang jia rui', 2016122125)
+    伽罗华域上的乘法，返回list
+    """
+    result_list = []
+    for i in range(len(row)):
+        if row[i] == 1:
+            result_list.append(col[i])
+        elif row[i] == 2:
+            if col[i] >= 128:
+                result_list.append(((col[i] % 128) * 2) ^ 27)
+            else:
+                result_list.append(col[i] * 2)
+        else:
+            if col[i] >= 128:
+                result_list.append(((col[i] % 128) * 2) ^ 27 ^ col[i])
+            else:
+                result_list.append(col[i] * 2 ^ col[i])
+    result = result_list[0] ^ result_list[1] ^ result_list[2] ^ result_list[3]
+    return result
+
+fun1('your name', 2016122000)
